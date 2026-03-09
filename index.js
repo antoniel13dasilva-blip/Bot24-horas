@@ -28,42 +28,22 @@ function createBot() {
 createBot()
 
 
-const mineflayer = require('mineflayer')
-const http = require('http')
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
 
-// Cria um servidor web para o Render/UptimeRobot não desligarem o bot
-http.createServer((req, res) => {
-    res.write("Bot está online!")
-    res.end()
-}).listen(8080)
+app.get('/', (req, res) => {
+  res.send('Bot Online!');
+});
 
-function createBot() {
-    const bot = mineflayer.createBot({
-        host: 'Server777891.aternos.me', 
-        port: 18749, 
-        username: 'Bot24Horas', 
-        version: '1.21.11'
-    })
+app.listen(port, () => {
+  console.log(`Servidor HTTP rodando na porta ${port}`);
+});
 
-    bot.on('login', () => {
-        console.log('Bot conectado!')
-        // Faz o bot mandar uma mensagem no chat assim que entrar
-        bot.chat('Bot 24h ativo e cuidando do servidor!')
-        
-        // Faz o bot pular a cada 60 segundos para não ser expulso
-        setInterval(() => {
-            bot.setControlState('jump', true)
-            setTimeout(() => bot.setControlState('jump', false), 500)
-        }, 60000)
-    })
+const axios = require('axios');
 
-    bot.on('error', (err) => console.log('Erro:', err.message))
-
-    bot.on('end', () => {
-        console.log('Conexão perdida, tentando reconectar em 10 segundos...')
-        setTimeout(createBot, 10000)
-    })
-}
-
-createBot()
-
+setInterval(() => {
+  axios.get('https://bot24-horas-aternos.onrender.com')
+    .then(() => console.log('Auto-ping realizado com sucesso'))
+    .catch(err => console.error('Erro no auto-ping:', err.message));
+}, 600000); // 10 minutos
