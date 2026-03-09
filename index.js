@@ -26,3 +26,9 @@ function createBot() {
 }
 
 createBot()
+
+const http = require('http');
+http.createServer((req, res) => {
+    res.write("Bot está online!");
+    res.end();
+}).listen(8080);
