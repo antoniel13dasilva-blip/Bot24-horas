@@ -26,23 +26,3 @@ function createBot() {
 }
 
 createBot()
-
-
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('Bot Online!');
-});
-
-app.listen(port, () => {
-  console.log(`Servidor HTTP rodando na porta ${port}`);
-});
-
-const axios = require('axios');
-
-setInterval(() => {
-  axios.get('https://bot24-horas-aternos.onrender.com')
-    .then(() => console.log('Auto-ping realizado com sucesso'))
-    .catch(err => console.error('Erro no auto-ping:', err.message));
-}, 600000); // 10 minutos
